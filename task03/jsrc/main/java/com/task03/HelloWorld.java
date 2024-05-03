@@ -5,18 +5,22 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.syndicate.deployment.annotations.lambda.LambdaHandler;
 import com.syndicate.deployment.model.RetentionSetting;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @LambdaHandler(lambdaName = "hello_world",
-	roleName = "hello_world-role",
-	isPublishVersion = true,
-	logsExpiration = RetentionSetting.SYNDICATE_ALIASES_SPECIFIED
+        roleName = "hello_world-role",
+        isPublishVersion = true,
+        logsExpiration = RetentionSetting.SYNDICATE_ALIASES_SPECIFIED
 )
-public class HelloWorld implements RequestHandler<Object, String> {
+public class HelloWorld implements RequestHandler<Object, Map<String, Object>> {
 
-	public String handleRequest(Object request, Context context) {
-		System.out.println("Hello from lambda");
-		return "{'statusCode': 200, 'message': 'Hello from Lambda'}";
-	}
+    public Map<String, Object> handleRequest(Object request, Context context) {
+        System.out.println("Hello from lambda");
+        Map<String, Object> resultMap = new LinkedHashMap<>();
+        resultMap.put("statusCode", 200);
+        resultMap.put("message", "Hello from Lambda");
+
+        return resultMap;
+    }
 }
