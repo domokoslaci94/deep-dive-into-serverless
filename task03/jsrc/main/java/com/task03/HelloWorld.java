@@ -17,6 +17,6 @@ public class HelloWorld implements RequestHandler<Object, String> {
 
 	public String handleRequest(Object request, Context context) {
 		System.out.println("Hello from lambda");
-		return "{\"statusCode\": 200, \"message\": \"Hello from Lambda\"}";
+		return "{'statusCode': 200, 'message': 'Hello from Lambda'}";
 	}
 }
