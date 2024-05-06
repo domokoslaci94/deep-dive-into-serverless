@@ -21,7 +21,7 @@ public class ApiHandler implements RequestHandler<ApiRequest, Map<String, Object
 
     private static final String REGION = "eu-central-1";
 
-    private static final EventDao eventDao = new EventDao(configureDynamoDB(), "cmtr-2258fa83-Events");
+    private static final EventDao eventDao = new EventDao(configureDynamoDB(), "cmtr-2258fa83-Events-test");
 
     private static AmazonDynamoDB configureDynamoDB() {
         return AmazonDynamoDBClientBuilder.standard()
