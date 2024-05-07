@@ -6,9 +6,11 @@ import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
 import com.amazonaws.services.dynamodbv2.model.PutItemResult;
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent;
 
+import java.time.Duration;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAmount;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,7 +72,8 @@ public class EventDao {
 
     private String extractModificationDate(DynamodbEvent.DynamodbStreamRecord dynamodbStreamRecord) {
         Date approximateCreationDateTime = dynamodbStreamRecord.getDynamodb().getApproximateCreationDateTime();
-        ZonedDateTime creationDateTime = ZonedDateTime.ofInstant(approximateCreationDateTime.toInstant(), ZoneOffset.UTC.normalized());
+        ZonedDateTime creationDateTime = ZonedDateTime.ofInstant(approximateCreationDateTime.toInstant(), ZoneOffset.UTC.normalized())
+                .plus(Duration.ofMillis(111));
         return creationDateTime.format(DateTimeFormatter.ISO_INSTANT);
     }
 
