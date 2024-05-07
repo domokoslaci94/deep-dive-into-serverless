@@ -30,7 +30,7 @@ public class UUIDGeneratorService {
     }
 
     public void generateUUIDs() {
-        String timestamp = ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT);
+        String timestamp = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
 
         System.out.println("Started process, the following timestamp will be used: " + timestamp);
 
