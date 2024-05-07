@@ -30,6 +30,13 @@ syndicate generate lambda \
     --runtime java 
 ```
 
+## Generate S3 Bucket
+
+```bash
+syndicate generate meta s3_bucket \ 
+    --resource_name {s3_name}
+```
+
 ## Generate API Gateway
 
 ```bash
@@ -74,6 +81,15 @@ syndicate generate meta dynamodb \
     --resource_name {table_name} \
     --hash_key_name {id} \
     --hash_key_type {type}
+```
+
+## Generate CloudWatch Event Rule
+
+```bash
+syndicate generate meta cloudwatch_event_rule \
+    --resource_name {resource_name} \
+    --rule_type schedule \
+    --expression {expression} 
 ```
 
 ## Build and deploy
