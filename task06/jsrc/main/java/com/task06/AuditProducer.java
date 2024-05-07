@@ -18,7 +18,7 @@ import java.util.Map;
         roleName = "audit_producer-role",
         logsExpiration = RetentionSetting.SYNDICATE_ALIASES_SPECIFIED
 )
-@DynamoDbTriggerEventSource(targetTable = "Configuration-test", batchSize = 1)
+@DynamoDbTriggerEventSource(targetTable = "Configuration", batchSize = 1)
 public class AuditProducer implements RequestHandler<DynamodbEvent, Map<String, Object>> {
     private static final String REGION = "eu-central-1";
 
