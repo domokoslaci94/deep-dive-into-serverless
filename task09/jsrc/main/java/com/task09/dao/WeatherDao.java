@@ -60,7 +60,7 @@ public class WeatherDao {
     private AttributeValue generateHourlyFrom(WeatherSnippetHourly hourly) {
         AttributeValue body = new AttributeValue();
         body.addMEntry("temperature_2m", new AttributeValue().withS(Arrays.toString(hourly.getTemperature_2m())));
-        body.addMEntry("time", new AttributeValue().withS(Arrays.toString(hourly.getTemperature_2m())));
+        body.addMEntry("time", new AttributeValue().withS(Arrays.toString(hourly.getTime())));
         return body;
     }
 
