@@ -31,7 +31,7 @@ import java.util.Map;
 @LambdaUrlConfig
 public class ApiHandler implements RequestHandler<Object, String> {
 
-    public static final String OPEN_METEO_API = "https://api.open-meteo.com/v1/forecast" +
+    private static final String OPEN_METEO_API = "https://api.open-meteo.com/v1/forecast" +
             "?latitude=52.52&longitude=13.41" +
             "&current=temperature_2m,wind_speed_10m" +
             "&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m";
