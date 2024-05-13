@@ -1,10 +1,13 @@
 package com.task09.api;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
 import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@DynamoDbBean
 public class WeatherResponse {
     private double elevation;
     private double generationtime_ms;
