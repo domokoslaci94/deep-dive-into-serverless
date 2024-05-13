@@ -13,10 +13,13 @@ import java.net.http.HttpResponse;
 
 public class WeatherService {
 
-    private static final String OPEN_METEO_API = "https://api.open-meteo.com/v1/forecast" +
-            "?latitude=52.52&longitude=13.41" +
+    private static final String OPEN_METEO_API = "https://archive-api.open-meteo.com/v1/era5" +
+            "?latitude=52.52" +
+            "&longitude=13.41" +
             "&current=temperature_2m,wind_speed_10m" +
-            "&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m";
+            "&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m" +
+            "&start_date=2023-12-04" +
+            "&end_date=2023-12-04";
 
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
