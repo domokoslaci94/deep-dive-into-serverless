@@ -3,3 +3,4 @@
 **/logs/
 **/.syndicate-config-dev/
 **/target/
+**/*.iml
