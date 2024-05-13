@@ -8,10 +8,8 @@ import com.task09.api.WeatherResponse;
 import com.task09.api.WeatherSnippetHourly;
 import com.task09.api.WeatherSnippetHourlyUnits;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class WeatherDao {
     private final AmazonDynamoDB amazonDynamoDB;
@@ -59,8 +57,12 @@ public class WeatherDao {
 
     private AttributeValue generateHourlyFrom(WeatherSnippetHourly hourly) {
         AttributeValue body = new AttributeValue();
-        body.addMEntry("temperature_2m", new AttributeValue().withS(Arrays.toString(hourly.getTemperature_2m())));
-        body.addMEntry("time", new AttributeValue().withS(Arrays.toString(hourly.getTime())));
+        List<String> temperatures = Arrays.stream(hourly.getTemperature_2m())
+                .mapToObj(Objects::toString)
+                .collect(Collectors.toList());
+
+        body.addMEntry("temperature_2m", new AttributeValue().withNS(temperatures));
+        body.addMEntry("time", new AttributeValue().withSS(hourly.getTime()));
         return body;
     }
 
