@@ -7,7 +7,6 @@ import com.task10.web.InternalRequestHandler;
 import com.task10.web.user.api.SigninRequest;
 import com.task10.web.user.api.SigninResponse;
 import com.task10.web.util.ObjectMapperDecorator;
-import org.apache.http.HttpStatus;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 
@@ -61,7 +60,7 @@ public class SigninInternalRequestHandler implements InternalRequestHandler {
 
         return new APIGatewayProxyResponseEvent()
                 .withBody(objectMapper.writeValueAsString(new SigninResponse(respondToAuthChallengeResponse.authenticationResult().idToken())))
-                .withStatusCode(HttpStatus.SC_OK);
+                .withStatusCode(200);
     }
 
     @Override

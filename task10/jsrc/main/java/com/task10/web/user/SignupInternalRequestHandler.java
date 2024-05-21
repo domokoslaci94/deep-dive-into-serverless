@@ -6,9 +6,10 @@ import com.task10.config.ApplicationContext;
 import com.task10.web.InternalRequestHandler;
 import com.task10.web.user.api.SignupRequest;
 import com.task10.web.util.ObjectMapperDecorator;
-import org.apache.http.HttpStatus;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserRequest;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserResponse;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.MessageActionType;
 
 public class SignupInternalRequestHandler implements InternalRequestHandler {
 
@@ -39,7 +40,7 @@ public class SignupInternalRequestHandler implements InternalRequestHandler {
 
         System.out.println("SignupRequestHandler: Created user: " + adminCreateUserResponse);
 
-        return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatus.SC_OK);
+        return new APIGatewayProxyResponseEvent().withStatusCode(200);
     }
 
     @Override

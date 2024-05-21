@@ -92,23 +92,6 @@ syndicate generate meta cloudwatch_event_rule \
     --expression {expression} 
 ```
 
-## Generate Cognito
-
-```bash
-syndicate generate meta cognito_user_pool \
-    --resource_name {resource_name}
-```
-
-## Generate API Gateway Authorizer
-
-```bash
-syndicate generate meta api_gateway_authorizer 
-	--api_name {api_name}
-	--name {name}
-	--type COGNITO_USER_POOLS
-	--provider_name {user_pool_name}
-```
-
 ## Build and deploy
 
 ```bash

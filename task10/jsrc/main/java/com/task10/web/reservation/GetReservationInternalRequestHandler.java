@@ -7,7 +7,6 @@ import com.task10.dao.entity.ReservationEntity;
 import com.task10.web.InternalRequestHandler;
 import com.task10.web.reservation.api.AllReservationsResponse;
 import com.task10.web.util.ObjectMapperDecorator;
-import org.apache.http.HttpStatus;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class GetReservationInternalRequestHandler implements InternalRequestHand
         List<ReservationEntity> reservations = table.getAllItem();
         return new APIGatewayProxyResponseEvent()
                 .withBody(objectMapper.writeValueAsString(new AllReservationsResponse(reservations)))
-                .withStatusCode(HttpStatus.SC_OK);
+                .withStatusCode(200);
     }
 
     @Override

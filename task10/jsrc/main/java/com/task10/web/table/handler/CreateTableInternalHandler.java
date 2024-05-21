@@ -7,7 +7,6 @@ import com.task10.dao.entity.TableEntity;
 import com.task10.web.InternalRequestHandler;
 import com.task10.web.table.api.CreateTableResponse;
 import com.task10.web.util.ObjectMapperDecorator;
-import org.apache.http.HttpStatus;
 
 public class CreateTableInternalHandler implements InternalRequestHandler {
 
@@ -31,7 +30,7 @@ public class CreateTableInternalHandler implements InternalRequestHandler {
         CreateTableResponse responseBody = new CreateTableResponse(tableEntity.getId());
 
         return new APIGatewayProxyResponseEvent().withBody(objectMapper.writeValueAsString(responseBody))
-                .withStatusCode(HttpStatus.SC_OK);
+                .withStatusCode(200);
     }
 
     @Override
