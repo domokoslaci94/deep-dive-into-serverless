@@ -12,10 +12,15 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreate
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.MessageActionType;
 
+import java.util.regex.Pattern;
+
 public class SignupInternalRequestHandler implements InternalRequestHandler {
 
     private static final String REQUEST_METHOD = "POST";
     private static final String REQUEST_PATH = "^/signup$";
+
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[A-Za-z0-9$%^*]{12,}$");
 
     private final ObjectMapperDecorator objectMapper;
     private final CognitoIdentityProviderClient cognitoClient;
@@ -27,10 +32,29 @@ public class SignupInternalRequestHandler implements InternalRequestHandler {
         this.userPoolId = userPoolId;
     }
 
+    private static void validateSignupRequest(SignupRequest signupRequest) {
+        validateEmail(signupRequest.getEmail());
+        validatePassword(signupRequest.getPassword());
+    }
+
+    private static void validatePassword(String password) {
+        if (!PASSWORD_PATTERN.matcher(password).matches()) {
+            throw new IllegalArgumentException("Invalid password");
+        }
+    }
+
+    private static void validateEmail(String email) {
+        if (!EMAIL_PATTERN.matcher(email).matches()) {
+            throw new IllegalArgumentException("Invalid email address");
+        }
+    }
+
     @Override
     public APIGatewayProxyResponseEvent handle(APIGatewayProxyRequestEvent request) {
         System.out.println("SignupRequestHandler: Received request: " + request);
         SignupRequest signupRequest = objectMapper.readValue(request.getBody(), SignupRequest.class);
+
+        validateSignupRequest(signupRequest);
 
         AdminCreateUserResponse adminCreateUserResponse = cognitoClient.adminCreateUser(AdminCreateUserRequest.builder()
                 .messageAction(MessageActionType.SUPPRESS)
@@ -62,5 +86,6 @@ public class SignupInternalRequestHandler implements InternalRequestHandler {
     public String getRequestMethod() {
         return REQUEST_METHOD;
     }
+
 
 }

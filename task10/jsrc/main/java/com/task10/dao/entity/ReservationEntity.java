@@ -96,7 +96,7 @@ public class ReservationEntity {
     @Override
     public String toString() {
         return "ReservationEntity{" +
-                "reservationId='" + id + '\'' +
+                "id='" + id + '\'' +
                 ", tableNumber=" + tableNumber +
                 ", clientName='" + clientName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +

@@ -19,6 +19,23 @@ public class RequestRouter {
         System.out.println("RequestRouter: Routing request: " + request);
         System.out.println("RequestRouter: Available handlers: " + internalRequestHandlers);
 
+        InternalRequestHandler internalRequestHandler = findHanlder(request);
+
+        System.out.println("RequestRouter: Found suitable handler: " + internalRequestHandler);
+        APIGatewayProxyResponseEvent response;
+        try {
+            response = internalRequestHandler.handle(request);
+        } catch (Exception e) {
+            String message = e.getMessage();
+            System.out.println("RequestRouter: Error handling request: " + message);
+            response = new APIGatewayProxyResponseEvent()
+                    .withStatusCode(400)
+                    .withBody(message);
+        }
+        return response;
+    }
+
+    private InternalRequestHandler findHanlder(APIGatewayProxyRequestEvent request) {
         List<InternalRequestHandler> handlerList = internalRequestHandlers.stream()
                 .filter(requestHandler -> request.getPath().matches(requestHandler.getRequestPath()))
                 .filter(requestHandler -> request.getHttpMethod().equals(requestHandler.getRequestMethod()))
@@ -35,9 +52,7 @@ public class RequestRouter {
         }
 
         InternalRequestHandler internalRequestHandler = handlerList.get(0);
-
-        System.out.println("RequestRouter: Found suitable handler: " + internalRequestHandler);
-        return internalRequestHandler.handle(request);
+        return internalRequestHandler;
     }
 
 }
