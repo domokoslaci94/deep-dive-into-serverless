@@ -28,7 +28,6 @@ import java.util.Set;
 
 public class ApplicationContext {
 
-    public static final String TEMP_PASSWORD = "TempPassword123!";
     public static final String TABLES_INDEX_NAME = "tables_index";
     public static final String RESERVATIONS_INDEX_NAME = "reservations_index";
     private static final String TABLES_TABLE_NAME = System.getenv("tables_table");

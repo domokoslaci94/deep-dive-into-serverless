@@ -2,20 +2,18 @@ package com.task10.web.user;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.task10.config.ApplicationContext;
 import com.task10.web.InternalRequestHandler;
 import com.task10.web.user.api.SignupRequest;
 import com.task10.web.util.ObjectMapperDecorator;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserRequest;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserResponse;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.MessageActionType;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class SignupInternalRequestHandler implements InternalRequestHandler {
 
+    private static final String TEMP_PASSWORD = "TempPassword123!";
     private static final String REQUEST_METHOD = "POST";
     private static final String REQUEST_PATH = "^/signup$";
 
@@ -25,11 +23,13 @@ public class SignupInternalRequestHandler implements InternalRequestHandler {
     private final ObjectMapperDecorator objectMapper;
     private final CognitoIdentityProviderClient cognitoClient;
     private final String userPoolId;
+    private final String clientId;
 
     public SignupInternalRequestHandler(ObjectMapperDecorator objectMapper, CognitoIdentityProviderClient cognitoClient, String userPoolId, String clientId) {
         this.objectMapper = objectMapper;
         this.cognitoClient = cognitoClient;
         this.userPoolId = userPoolId;
+        this.clientId = clientId;
     }
 
     private static void validateSignupRequest(SignupRequest signupRequest) {
@@ -56,15 +56,17 @@ public class SignupInternalRequestHandler implements InternalRequestHandler {
 
         validateSignupRequest(signupRequest);
 
+        String email = signupRequest.getEmail();
+        String password = signupRequest.getPassword();
+
         AdminCreateUserResponse adminCreateUserResponse = cognitoClient.adminCreateUser(AdminCreateUserRequest.builder()
                 .messageAction(MessageActionType.SUPPRESS)
                 .userPoolId(userPoolId)
-                .username(signupRequest.getEmail())
-
-                .temporaryPassword(ApplicationContext.TEMP_PASSWORD)
+                .username(email)
+                .temporaryPassword(TEMP_PASSWORD)
                 .userAttributes(AttributeType.builder()
                                 .name("email")
-                                .value(signupRequest.getEmail())
+                                .value(email)
                                 .build(),
                         AttributeType.builder()
                                 .name("email_verified")
@@ -73,6 +75,28 @@ public class SignupInternalRequestHandler implements InternalRequestHandler {
                 .build());
 
         System.out.println("SignupRequestHandler: Created user: " + adminCreateUserResponse);
+
+        AdminInitiateAuthResponse adminInitiateAuthResponse = cognitoClient.adminInitiateAuth(AdminInitiateAuthRequest.builder()
+                .userPoolId(userPoolId)
+                .clientId(clientId)
+                .authFlow(AuthFlowType.ADMIN_USER_PASSWORD_AUTH)
+                .authParameters(Map.of(
+                        "USERNAME", email,
+                        "PASSWORD", TEMP_PASSWORD))
+                .build());
+
+        System.out.println("SignupRequestHandler: Authenticated user: " + adminInitiateAuthResponse);
+
+        RespondToAuthChallengeResponse respondToAuthChallengeResponse = cognitoClient.respondToAuthChallenge(RespondToAuthChallengeRequest.builder()
+                .challengeName(ChallengeNameType.NEW_PASSWORD_REQUIRED)
+                .clientId(clientId)
+                .challengeResponses(Map.of(
+                        "USERNAME", email,
+                        "NEW_PASSWORD", password))
+                .session(adminInitiateAuthResponse.session())
+                .build());
+
+        System.out.println("SignupRequestHandler: Responded to auth challenge: " + respondToAuthChallengeResponse);
 
         return new APIGatewayProxyResponseEvent().withStatusCode(200);
     }

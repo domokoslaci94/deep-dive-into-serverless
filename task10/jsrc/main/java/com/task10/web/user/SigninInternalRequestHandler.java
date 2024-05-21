@@ -2,7 +2,6 @@ package com.task10.web.user;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.task10.config.ApplicationContext;
 import com.task10.web.InternalRequestHandler;
 import com.task10.web.user.api.SigninRequest;
 import com.task10.web.user.api.SigninResponse;
@@ -41,25 +40,13 @@ public class SigninInternalRequestHandler implements InternalRequestHandler {
                 .authFlow(AuthFlowType.ADMIN_USER_PASSWORD_AUTH)
                 .authParameters(Map.of(
                         "USERNAME", signinRequest.getEmail(),
-                        "PASSWORD", ApplicationContext.TEMP_PASSWORD))
+                        "PASSWORD", signinRequest.getPassword()))
                 .build());
 
         System.out.println("SigninRequestHandler: Authenticated user: " + adminInitiateAuthResponse);
 
-        RespondToAuthChallengeResponse respondToAuthChallengeResponse = cognitoClient.respondToAuthChallenge(RespondToAuthChallengeRequest.builder()
-                .challengeName(ChallengeNameType.NEW_PASSWORD_REQUIRED)
-                .clientId(clientId)
-                .challengeResponses(Map.of(
-                        "USERNAME", signinRequest.getEmail(),
-                        "NEW_PASSWORD", signinRequest.getPassword()))
-                .session(adminInitiateAuthResponse.session())
-                .build()
-        );
-
-        System.out.println("SigninRequestHandler: Responded to auth challenge: " + respondToAuthChallengeResponse);
-
         return new APIGatewayProxyResponseEvent()
-                .withBody(objectMapper.writeValueAsString(new SigninResponse(respondToAuthChallengeResponse.authenticationResult().idToken())))
+                .withBody(objectMapper.writeValueAsString(new SigninResponse(adminInitiateAuthResponse.authenticationResult().idToken())))
                 .withStatusCode(200);
     }
 

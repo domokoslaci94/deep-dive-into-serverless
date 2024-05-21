@@ -19,23 +19,21 @@ public class RequestRouter {
         System.out.println("RequestRouter: Routing request: " + request);
         System.out.println("RequestRouter: Available handlers: " + internalRequestHandlers);
 
-        InternalRequestHandler internalRequestHandler = findHanlder(request);
-
+        InternalRequestHandler internalRequestHandler = findHandler(request);
         System.out.println("RequestRouter: Found suitable handler: " + internalRequestHandler);
         APIGatewayProxyResponseEvent response;
         try {
             response = internalRequestHandler.handle(request);
         } catch (Exception e) {
-            String message = e.getMessage();
-            System.out.println("RequestRouter: Error handling request: " + message);
+            System.out.println("RequestRouter: Error handling request: " + e);
             response = new APIGatewayProxyResponseEvent()
                     .withStatusCode(400)
-                    .withBody(message);
+                    .withBody(e.getMessage());
         }
         return response;
     }
 
-    private InternalRequestHandler findHanlder(APIGatewayProxyRequestEvent request) {
+    private InternalRequestHandler findHandler(APIGatewayProxyRequestEvent request) {
         List<InternalRequestHandler> handlerList = internalRequestHandlers.stream()
                 .filter(requestHandler -> request.getPath().matches(requestHandler.getRequestPath()))
                 .filter(requestHandler -> request.getHttpMethod().equals(requestHandler.getRequestMethod()))
@@ -51,8 +49,7 @@ public class RequestRouter {
             throw new IllegalArgumentException("Ambiguous mapping, found multiple handlers: " + handlerList);
         }
 
-        InternalRequestHandler internalRequestHandler = handlerList.get(0);
-        return internalRequestHandler;
+        return handlerList.get(0);
     }
 
 }
