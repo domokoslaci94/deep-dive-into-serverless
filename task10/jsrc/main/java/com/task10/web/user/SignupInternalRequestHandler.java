@@ -9,6 +9,7 @@ import com.task10.web.util.ObjectMapperDecorator;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserRequest;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserResponse;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.MessageActionType;
 
 public class SignupInternalRequestHandler implements InternalRequestHandler {
@@ -35,7 +36,16 @@ public class SignupInternalRequestHandler implements InternalRequestHandler {
                 .messageAction(MessageActionType.SUPPRESS)
                 .userPoolId(userPoolId)
                 .username(signupRequest.getEmail())
+
                 .temporaryPassword(ApplicationContext.TEMP_PASSWORD)
+                .userAttributes(AttributeType.builder()
+                                .name("email")
+                                .value(signupRequest.getEmail())
+                                .build(),
+                        AttributeType.builder()
+                                .name("email_verified")
+                                .value("true")
+                                .build())
                 .build());
 
         System.out.println("SignupRequestHandler: Created user: " + adminCreateUserResponse);

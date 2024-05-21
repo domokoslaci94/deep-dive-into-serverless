@@ -74,11 +74,11 @@ public class CreateReservationInternalRequestHandler implements InternalRequestH
 
         verifyTimeSlot(reservationsForDate, reservation);
 
-        reservation.setReservationId(generateId());
+        reservation.setId(generateId());
         reservations.putItem(reservation);
 
         System.out.printf("CreateReservationInternalRequestHandler: Saved reservation: %s%n", reservation);
-        CreateReservationResponse responseBody = new CreateReservationResponse(reservation.getReservationId());
+        CreateReservationResponse responseBody = new CreateReservationResponse(reservation.getId());
         return new APIGatewayProxyResponseEvent()
                 .withBody(objectMapper.writeValueAsString(responseBody))
                 .withStatusCode(200);
