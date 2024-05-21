@@ -13,7 +13,7 @@ import java.util.Objects;
 public class ReservationEntity {
 
     @JsonIgnore
-    private String reservationId;
+    private String id;
     private int tableNumber;
     private String clientName;
     private String phoneNumber;
@@ -22,12 +22,12 @@ public class ReservationEntity {
     private String slotTimeEnd;
 
     @DynamoDbPartitionKey
-    public String getReservationId() {
-        return reservationId;
+    public String getId() {
+        return id;
     }
 
-    public void setReservationId(String reservationId) {
-        this.reservationId = reservationId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     @DynamoDbSecondarySortKey(indexNames = {ApplicationContext.RESERVATIONS_INDEX_NAME})
@@ -85,18 +85,18 @@ public class ReservationEntity {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         ReservationEntity that = (ReservationEntity) object;
-        return tableNumber == that.tableNumber && Objects.equals(reservationId, that.reservationId) && Objects.equals(clientName, that.clientName) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(date, that.date) && Objects.equals(slotTimeStart, that.slotTimeStart) && Objects.equals(slotTimeEnd, that.slotTimeEnd);
+        return tableNumber == that.tableNumber && Objects.equals(id, that.id) && Objects.equals(clientName, that.clientName) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(date, that.date) && Objects.equals(slotTimeStart, that.slotTimeStart) && Objects.equals(slotTimeEnd, that.slotTimeEnd);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(reservationId, tableNumber, clientName, phoneNumber, date, slotTimeStart, slotTimeEnd);
+        return Objects.hash(id, tableNumber, clientName, phoneNumber, date, slotTimeStart, slotTimeEnd);
     }
 
     @Override
     public String toString() {
         return "ReservationEntity{" +
-                "reservationId='" + reservationId + '\'' +
+                "reservationId='" + id + '\'' +
                 ", tableNumber=" + tableNumber +
                 ", clientName='" + clientName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
