@@ -9,16 +9,6 @@ import com.syndicate.deployment.annotations.environment.EnvironmentVariables;
 import com.syndicate.deployment.annotations.lambda.LambdaHandler;
 import com.syndicate.deployment.model.RetentionSetting;
 import com.task10.config.ApplicationContext;
-import com.task10.web.InternalRequestHandler;
-import com.task10.web.RequestRouter;
-import com.task10.web.reservation.CreateReservationInternalRequestHandler;
-import com.task10.web.reservation.GetReservationInternalRequestHandler;
-import com.task10.web.table.handler.AllTablesInternalRequestHandler;
-import com.task10.web.table.handler.SingleTableInternalRequestHandler;
-import com.task10.web.user.SigninInternalRequestHandler;
-import com.task10.web.user.SignupInternalRequestHandler;
-
-import java.util.Set;
 
 @LambdaHandler(lambdaName = "api_handler",
         roleName = "api_handler-role",

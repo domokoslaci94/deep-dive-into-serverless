@@ -6,7 +6,6 @@ import com.task10.dao.DynamoDBTableDecorator;
 import com.task10.dao.entity.TableEntity;
 import com.task10.web.InternalRequestHandler;
 import com.task10.web.util.ObjectMapperDecorator;
-import org.apache.http.HttpStatus;
 
 public class SingleTableInternalRequestHandler implements InternalRequestHandler {
 
@@ -33,7 +32,7 @@ public class SingleTableInternalRequestHandler implements InternalRequestHandler
 
         return new APIGatewayProxyResponseEvent()
                 .withBody(objectMapper.writeValueAsString(item))
-                .withStatusCode(HttpStatus.SC_OK);
+                .withStatusCode(200);
     }
 
     @Override

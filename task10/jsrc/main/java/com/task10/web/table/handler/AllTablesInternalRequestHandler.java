@@ -7,7 +7,6 @@ import com.task10.dao.entity.TableEntity;
 import com.task10.web.InternalRequestHandler;
 import com.task10.web.table.api.AllTablesResponse;
 import com.task10.web.util.ObjectMapperDecorator;
-import org.apache.http.HttpStatus;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class AllTablesInternalRequestHandler implements InternalRequestHandler {
 
         return new APIGatewayProxyResponseEvent()
                 .withBody(objectMapper.writeValueAsString(new AllTablesResponse(tables)))
-                .withStatusCode(HttpStatus.SC_OK);
+                .withStatusCode(200);
     }
 
     @Override

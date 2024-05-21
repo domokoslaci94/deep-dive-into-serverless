@@ -8,7 +8,6 @@ import com.task10.dao.entity.TableEntity;
 import com.task10.web.InternalRequestHandler;
 import com.task10.web.reservation.api.CreateReservationResponse;
 import com.task10.web.util.ObjectMapperDecorator;
-import org.apache.http.HttpStatus;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
@@ -82,7 +81,7 @@ public class CreateReservationInternalRequestHandler implements InternalRequestH
         CreateReservationResponse responseBody = new CreateReservationResponse(reservation.getReservationId());
         return new APIGatewayProxyResponseEvent()
                 .withBody(objectMapper.writeValueAsString(responseBody))
-                .withStatusCode(HttpStatus.SC_OK);
+                .withStatusCode(200);
     }
 
     private List<ReservationEntity> getReservationsForDateForTable(String date, int tableNumber) {
