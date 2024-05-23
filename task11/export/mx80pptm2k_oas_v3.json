@@ -16,10 +16,29 @@
   ],
   "paths": {
     "/reservations": {
+      "summary": "Get all reservations",
+      "description": "Get all reservations",
       "get": {
         "responses": {
           "200": {
             "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllTablesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 response",
             "headers": {
               "Access-Control-Allow-Origin": {
                 "schema": {
@@ -561,7 +580,137 @@
       "Empty": {
         "title": "Empty Schema",
         "type": "object"
+      },
+      "AllReservationsResponse": {
+        "title": "AllReservationsResponse",
+        "type": "object",
+        "properties": {
+          "reservations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReservationEntity"
+            }
+          }
+        }
+      },
+      "CreateReservationResponse": {
+        "title": "CreateReservationResponse",
+        "type": "object",
+        "properties": {
+          "reservationId": {
+            "type": "string"
+          }
+        }
+      },
+      "AllTablesResponse": {
+        "title": "AllTablesResponse",
+        "type": "object",
+        "properties": {
+          "tables": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TableEntity"
+            }
+          }
+        }
+      },
+      "CreateTableResponse": {
+        "title": "CreateTableResponse",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          }
+        }
+      },
+      "SigninRequest": {
+        "title": "SigninRequest",
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "SigninResponse": {
+        "title": "SigninResponse",
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          }
+        }
+      },
+      "SignupRequest": {
+        "title": "SignupRequest",
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "ReservationEntity": {
+        "title": "ReservationEntity",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tableNumber": {
+            "type": "integer"
+          },
+          "clientName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "slotTimeStart": {
+            "type": "string"
+          },
+          "slotTimeEnd": {
+            "type": "string"
+          }
+        }
+      },
+      "TableEntity": {
+        "title": "TableEntity",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "number": {
+            "type": "integer"
+          },
+          "places": {
+            "type": "integer"
+          },
+          "isVip": {
+            "type": "boolean"
+          },
+          "minOrder": {
+            "type": "integer"
+          }
+        }
       }
+    }
     },
     "securitySchemes": {
       "authorizer": {
